@@ -5,31 +5,26 @@ import MenuCunstom from './components/menu/Menu';
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Home from './pages/home/Home';
 import User from './pages/setting/user/User';
-type appProps = {
+import menus, { MenuSetting, MenuSettingItem } from './routes/route-config';
 
-}
-type appState = {
-  menuList: string[],
-  obj: object,
-  openKeys: string[],
-  test: string
-}
-const { SubMenu } = Menu;
 const { Header, Content } = Layout;
-class App extends Component<appProps, appState> {
-  rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
-
+class App extends Component {
+  routerList: MenuSetting[] = [];
   constructor(props: any) {
     super(props);
     this.state = {
-      menuList: ['首页', '测试页'],
-      openKeys: ['sub1'],
-      obj: {
-        className: 'test',
-        'data-test': '1'
-      },
-      test: '测试'
+
     }
+    this.generateRouter(menus);
+  }
+  generateRouter(list: MenuSetting[]) {
+    list.map((item: MenuSetting) => {
+      if (item.children) {
+        return this.generateRouter(item.children);
+      } else {
+        return this.routerList.push(item);
+      }
+    });
   }
   componentWillMount() {
     console.log(this);
@@ -37,15 +32,8 @@ class App extends Component<appProps, appState> {
   componentDidMount() {
     console.log(this);
   }
-  onOpenChange(openKeys: any) {
-    const latestOpenKey = this.state.openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
-    if (this.rootSubmenuKeys.indexOf(latestOpenKey as any) === -1) {
-      this.setState({});
-    } else {
-      this.setState({
-        openKeys: latestOpenKey ? [latestOpenKey] : [],
-      });
-    }
+  componentWillUpdate() {
+    console.log(this);
   }
   render() {
     return (
@@ -64,7 +52,7 @@ class App extends Component<appProps, appState> {
             <Content
               className="site-layout-background"
               style={{
-                padding: 24,
+                padding: 0,
                 margin: 0,
                 minHeight: 280,
               }}
@@ -72,29 +60,18 @@ class App extends Component<appProps, appState> {
               <Router>
                 <Switch>
                   <Route exact path="/" render={() => <Redirect to="/app/home" push />} />
-                  <Route path="/app/home" component={Home} />
-                  <Route path="/app/setting/user" component={User} />
+                  {
+                    this.routerList.map(item => {
+                      return <Route key={item.nickName} path={item.url} component={item.component} />;
+                    })
+                  }
                 </Switch>
               </Router>
-
             </Content>
           </Layout>
         </Layout>
       </Layout>
     );
-  }
-  handleChange(e: any) {
-    console.log(e.target.value);
-  }
-  changeMenu(e: any, index: number) {
-    console.log(e);
-    console.log(index);
-  }
-  updateMenu(e: any) {
-    console.log(e);
-    this.setState({
-      menuList: ['首页', '角色管理']
-    })
   }
 }
 
