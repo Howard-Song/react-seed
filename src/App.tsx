@@ -1,21 +1,37 @@
 import React, { Component } from 'react';
 import './App.less';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Breadcrumb } from 'antd';
 import MenuCunstom from './components/menu/Menu';
-import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import Home from './pages/home/Home';
-import User from './pages/setting/user/User';
-import menus, { MenuSetting, MenuSettingItem } from './routes/route-config';
+import { HashRouter as Router, Route, Switch, Redirect, withRouter } from 'react-router-dom';
+import menus, { MenuSetting } from './routes/route-config';
 
 const { Header, Content } = Layout;
-class App extends Component {
+
+class App extends Component<any> {
   routerList: MenuSetting[] = [];
+  state = {
+    url: location.hash.split('#')[1],
+    openMenu: [menus[0].nickName] as any,
+    selectMenu: [''],
+  }
   constructor(props: any) {
     super(props);
-    this.state = {
-
-    }
+    props.history.listen((location: any) => {
+      this.getLocation(menus, location.pathname);
+    });
     this.generateRouter(menus);
+  }
+  getLocation(menuList: any, url: string) {
+    menuList.forEach((item: any, index: any) => {
+      if (url.indexOf(item.url) != -1) {
+        if (!item.children) {
+          this.setState({ selectMenu: [item.nickName] });
+        } else {
+          this.setState({ openMenu: [item.nickName] });
+          this.getLocation(item.children, url);
+        }
+      }
+    });
   }
   generateRouter(list: MenuSetting[]) {
     list.map((item: MenuSetting) => {
@@ -26,15 +42,6 @@ class App extends Component {
       }
     });
   }
-  componentWillMount() {
-    console.log(this);
-  }
-  componentDidMount() {
-    console.log(this);
-  }
-  componentWillUpdate() {
-    console.log(this);
-  }
   render() {
     return (
       <Layout className="main">
@@ -42,7 +49,7 @@ class App extends Component {
           <div className="logo" />
         </Header>
         <Layout>
-          <MenuCunstom></MenuCunstom>
+          <MenuCunstom openMenu={this.state.openMenu} selectMenu={this.state.selectMenu}></MenuCunstom>
           <Layout style={{ padding: '0 24px 24px' }}>
             <Breadcrumb style={{ margin: '16px 0' }}>
               <Breadcrumb.Item>Home</Breadcrumb.Item>
@@ -75,4 +82,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

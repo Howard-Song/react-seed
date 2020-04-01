@@ -32,7 +32,7 @@ export interface MenuSettingItem {
 
 const menus: MenuSetting[] = [
   {
-    nickName: 'Home',
+    nickName: 'home',
     component: Home,
     name: '首页',
     icon: HomeOutlined,
@@ -41,10 +41,11 @@ const menus: MenuSetting[] = [
   {
     name: '系统设置',
     icon: SettingOutlined,
+    nickName: 'systemSetting',
     url: '/app/setting',
     children: [
       {
-        nickName: 'User',
+        nickName: 'user',
         component: User,
         name: '用户管理',
         icon: '',
@@ -53,7 +54,7 @@ const menus: MenuSetting[] = [
     ]
   },
   {
-    nickName: 'NotFound',
+    nickName: 'notFound',
     component: NotFound,
     name: '404',
     icon: '',
