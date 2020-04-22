@@ -1,7 +1,7 @@
 /*
  * @Author: yoo
  * @Date: 2020-03-31 14:51:01
- * @LastEditTime: 2020-03-31 18:12:54
+ * @LastEditTime: 2020-04-22 17:09:44
  * @LastEditors: yoo
  */
 import Home from "../pages/home/Home";
@@ -10,7 +10,9 @@ import NotFound from "../pages/notFound/NotFound";
 import {
   HomeOutlined,
   SettingOutlined,
+  DesktopOutlined,
 } from '@ant-design/icons';
+import TaskList from "../pages/task/list/List";
 
 export interface MenuSetting extends MenuSettingItem {
   // 子路由
@@ -27,6 +29,8 @@ export interface MenuSettingItem {
   icon: any,
   // 路由地址
   url: string,
+  // 路由层级
+  level: number,
   isHide?: boolean
 }
 
@@ -37,12 +41,31 @@ const menus: MenuSetting[] = [
     name: '首页',
     icon: HomeOutlined,
     url: '/app/home',
+    level: 1
+  },
+  {
+    name: '任务',
+    icon: DesktopOutlined,
+    nickName: 'taskManage',
+    url: '/app/taskManage',
+    level: 1,
+    children: [
+      {
+        nickName: 'list',
+        component: TaskList,
+        name: '列表',
+        icon: '',
+        url: '/app/taskManage/list',
+        level: 2,
+      }
+    ]
   },
   {
     name: '系统设置',
     icon: SettingOutlined,
     nickName: 'systemSetting',
     url: '/app/setting',
+    level: 1,
     children: [
       {
         nickName: 'user',
@@ -50,6 +73,7 @@ const menus: MenuSetting[] = [
         name: '用户管理',
         icon: '',
         url: '/app/setting/user',
+        level: 2,
       }
     ]
   },
@@ -59,6 +83,7 @@ const menus: MenuSetting[] = [
     name: '404',
     icon: '',
     url: '/app/404',
+    level: 1,
     isHide: true
   },
 ];

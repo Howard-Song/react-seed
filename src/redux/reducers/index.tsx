@@ -1,15 +1,17 @@
-import { ModifyAction } from '../actions';
-import { DECREMENT, INCREMENT } from '../store/const';
+import { ModifyAction } from "../actions";
+import { SETOPENMENU, SETSELECTMENU } from "../store/const";
 
-
-// 处理并返回 state 
-export default (state = 0, action: ModifyAction): number => {
+// 处理并返回 state
+export default (
+  state = { selectMenu: [], openMenu: [] },
+  action: ModifyAction
+): any => {
   switch (action.type) {
-    case INCREMENT:
-      return state + 1
-    case DECREMENT:
-      return state - 1
+    case SETOPENMENU:
+      return Object.assign({}, state, { openMenu: action.data });
+    case SETSELECTMENU:
+      return Object.assign({}, state, { selectMenu: action.data });
     default:
-      return state
+      return state;
   }
-}
+};

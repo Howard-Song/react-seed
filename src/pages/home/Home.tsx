@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import './Home.less';
-import { Button } from 'antd';
-import { createHashHistory } from 'history';
+import React, { Component, Dispatch } from "react";
+import "./Home.less";
+import { Button } from "antd";
+import { createHashHistory } from "history";
+import { withRouter } from "react-router";
 
-class Home extends Component<any>  {
+class Home extends Component<any> {
   constructor(props: any) {
-    super(props)
+    super(props);
   }
-  handleClick(e: any) {
-    const history = createHashHistory();
-    history.push('/app/setting/user');
+  handleClick() {
+    this.props.history.push("/app/setting/user");
   }
   render() {
     return (
@@ -19,4 +19,5 @@ class Home extends Component<any>  {
     );
   }
 }
-export default Home;
+
+export default withRouter(Home);
