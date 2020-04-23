@@ -10,17 +10,15 @@ import {
   withRouter,
 } from "react-router-dom";
 import menus, { MenuSetting } from "./routes/route-config";
+import NotFound from "./pages/notFound/NotFound";
 
 const { Header, Content } = Layout;
 class App extends Component<any> {
   routerList: MenuSetting[] = [];
   constructor(props: any) {
     super(props);
-  }
-  componentDidMount() {
     this.generateRouter(menus);
   }
-
   generateRouter(list: MenuSetting[]) {
     list.map((item: MenuSetting) => {
       if (item.children) {
@@ -68,6 +66,7 @@ class App extends Component<any> {
                       />
                     );
                   })}
+                  <Route component={NotFound} />
                 </Switch>
               </Router>
             </Content>

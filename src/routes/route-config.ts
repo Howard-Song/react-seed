@@ -1,12 +1,11 @@
 /*
  * @Author: yoo
  * @Date: 2020-03-31 14:51:01
- * @LastEditTime: 2020-04-22 17:09:44
+ * @LastEditTime: 2020-04-22 18:08:48
  * @LastEditors: yoo
  */
 import Home from "../pages/home/Home";
 import User from "../pages/setting/user/User";
-import NotFound from "../pages/notFound/NotFound";
 import {
   HomeOutlined,
   SettingOutlined,
@@ -76,15 +75,6 @@ const menus: MenuSetting[] = [
         level: 2,
       }
     ]
-  },
-  {
-    nickName: 'notFound',
-    component: NotFound,
-    name: '404',
-    icon: '',
-    url: '/app/404',
-    level: 1,
-    isHide: true
   },
 ];
 export default menus;
