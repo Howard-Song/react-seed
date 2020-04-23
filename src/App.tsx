@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import "./App.less";
 import { Layout, Breadcrumb } from "antd";
 import MenuCunstom from "./components/menu/Menu";
@@ -9,22 +9,38 @@ import {
   Redirect,
   withRouter,
 } from "react-router-dom";
-import menus, { MenuSetting } from "./routes/route-config";
+import { MenuSetting } from "./routes/route-config";
 import NotFound from "./pages/notFound/NotFound";
+import Pages from "./pages";
 
+import HttpService from "./util/http";
+if (process.env.NODE_ENV === "development") {
+  require("./mock/index");
+}
 const { Header, Content } = Layout;
-class App extends Component<any> {
-  routerList: MenuSetting[] = [];
+interface AppState {
+  routerList: MenuSetting[];
+}
+class App extends Component<any, AppState> {
   constructor(props: any) {
     super(props);
-    this.generateRouter(menus);
+    this.state = {
+      routerList: [],
+    };
+    this.getMenu();
+  }
+  async getMenu() {
+    let data = await HttpService.get("/getPermission", "");
+    this.generateRouter(data as any);
   }
   generateRouter(list: MenuSetting[]) {
     list.map((item: MenuSetting) => {
       if (item.children) {
         return this.generateRouter(item.children);
       } else {
-        return this.routerList.push(item);
+        return this.setState({
+          routerList: this.state.routerList.concat([item]),
+        });
       }
     });
   }
@@ -51,23 +67,25 @@ class App extends Component<any> {
               }}
             >
               <Router>
-                <Switch>
-                  <Route
-                    exact
-                    path="/"
-                    render={() => <Redirect to="/app/home" push />}
-                  />
-                  {this.routerList.map((item) => {
-                    return (
-                      <Route
-                        key={item.nickName}
-                        path={item.url}
-                        component={item.component}
-                      />
-                    );
-                  })}
-                  <Route component={NotFound} />
-                </Switch>
+                <Suspense fallback={<div>Loading</div>}>
+                  <Switch>
+                    <Route
+                      exact
+                      path="/"
+                      render={() => <Redirect to="/app/home" push />}
+                    />
+                    {this.state.routerList.map((item) => {
+                      return (
+                        <Route
+                          key={item.nickName}
+                          path={item.url}
+                          component={Pages[item.component]}
+                        />
+                      );
+                    })}
+                    <Route component={NotFound} />
+                  </Switch>
+                </Suspense>
               </Router>
             </Content>
           </Layout>
@@ -77,4 +95,4 @@ class App extends Component<any> {
   }
 }
 
-export default withRouter(App);
+export default withRouter(App as any);

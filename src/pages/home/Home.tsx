@@ -1,7 +1,6 @@
-import React, { Component, Dispatch } from "react";
+import React, { Component } from "react";
 import "./Home.less";
 import { Button } from "antd";
-import { createHashHistory } from "history";
 import { withRouter } from "react-router";
 
 class Home extends Component<any> {
