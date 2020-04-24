@@ -8,7 +8,7 @@ class TaskList extends Component<any> {
     super(props);
   }
   handleClick() {
-    this.props.history.push("/app/home");
+    this.props.history.push("/pages/home");
   }
   render() {
     return (

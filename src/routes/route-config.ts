@@ -6,11 +6,7 @@
  */
 import Home from "../pages/home/Home";
 import User from "../pages/setting/user/User";
-import {
-  HomeOutlined,
-  SettingOutlined,
-  DesktopOutlined,
-} from '@ant-design/icons';
+
 import TaskList from "../pages/task/list/List";
 
 export interface MenuSetting extends MenuSettingItem {
@@ -38,13 +34,13 @@ const menus: MenuSetting[] = [
     nickName: 'home',
     component: Home,
     name: '首页',
-    icon: HomeOutlined,
+    icon: 'HomeOutlined',
     url: '/app/home',
     level: 1
   },
   {
     name: '任务',
-    icon: DesktopOutlined,
+    icon: 'DesktopOutlined',
     nickName: 'taskManage',
     url: '/app/taskManage',
     level: 1,
@@ -61,7 +57,7 @@ const menus: MenuSetting[] = [
   },
   {
     name: '系统设置',
-    icon: SettingOutlined,
+    icon: 'SettingOutlined',
     nickName: 'systemSetting',
     url: '/app/setting',
     level: 1,

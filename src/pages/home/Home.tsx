@@ -8,7 +8,7 @@ class Home extends Component<any> {
     super(props);
   }
   handleClick() {
-    this.props.history.push("/app/setting/user");
+    this.props.history.push("/pages/setting/user");
   }
   render() {
     return (

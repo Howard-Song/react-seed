@@ -6,9 +6,10 @@ const { SubMenu } = Menu;
 const { Sider } = Layout;
 import "./Menu.less";
 import { Link, HashRouter as Router, withRouter } from "react-router-dom";
-import menus from "../../routes/route-config";
 import { setOpenMenu, setSelectMenu } from "../../redux/actions";
 import { connect } from "react-redux";
+import store from "../../redux/store";
+import Icons from "./../icon";
 
 class MenuCunstom extends Component<any> {
   constructor(props: any) {
@@ -16,43 +17,50 @@ class MenuCunstom extends Component<any> {
   }
   state = {
     url: location.hash.split("#")[1],
-    rootSubmenuKeys: menus
-      .map((item) => {
-        if (item.children) {
-          return item.nickName;
-        }
-      })
-      .filter((item) => {
-        return item !== undefined;
-      }),
+    rootSubmenuKeys: [],
   };
   componentDidMount() {
-    this.getLocation(menus, this.state.url);
+    this.props.onRef(this);
+    store.subscribe(() => {
+      this.setState({
+        rootSubmenuKeys: store
+          .getState()
+          .menus.map((item: any) => {
+            if (item.children) {
+              return item.nickName;
+            }
+          })
+          .filter((item: any) => {
+            return item !== undefined;
+          }),
+      });
+    });
     this.props.history.listen((location: any) => {
-      this.getLocation(menus, location.pathname);
+      this.getLocation(this.props.menus, location.pathname);
     });
   }
   getLocation(menuList: any, url: string) {
-    menuList.forEach((item: any, index: any) => {
-      if (url.indexOf(item.url) != -1) {
-        if (!item.children) {
-          this.props.setSelectMenu([item.nickName]);
-          if (item.level == 1) {
-            this.props.setOpenMenu([]);
+    menuList &&
+      menuList.forEach((item: any, index: any) => {
+        if (url.indexOf(item.url) != -1) {
+          if (!item.children) {
+            this.props.setSelectMenu([item.nickName]);
+            if (item.level == 1) {
+              this.props.setOpenMenu([]);
+            }
+          } else {
+            this.props.setOpenMenu([item.nickName]);
+            this.getLocation(item.children, url);
           }
-        } else {
-          this.props.setOpenMenu([item.nickName]);
-          this.getLocation(item.children, url);
         }
-      }
-    });
+      });
   }
   onOpenChange(openMenu: any) {
     const latestOpenKey = openMenu.find(
       (key: any) =>
         this.props.openMenu && this.props.openMenu.indexOf(key) === -1
     );
-    if (this.state.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+    if ((this.state.rootSubmenuKeys as any).indexOf(latestOpenKey) === -1) {
       this.props.setOpenMenu(openMenu);
     } else {
       this.props.setOpenMenu(latestOpenKey ? [latestOpenKey] : []);
@@ -74,40 +82,41 @@ class MenuCunstom extends Component<any> {
             onSelect={this.OnSelectMenu.bind(this)}
             style={{ width: 200, height: "100%" }}
           >
-            {menus.map((item, index) => {
-              if (item.children) {
-                return (
-                  <SubMenu
-                    className="menu-item"
-                    key={item.nickName}
-                    title={
-                      <div className="column-center">
-                        <Icon className="icon" component={item.icon} />
+            {this.props.menus &&
+              this.props.menus.map((item: any, index: number) => {
+                if (item.children) {
+                  return (
+                    <SubMenu
+                      className="menu-item"
+                      key={item.nickName}
+                      title={
+                        <div className="column-center">
+                          <Icon className="icon" component={Icons[item.icon]} />
+                          <span>{item.name}</span>
+                        </div>
+                      }
+                    >
+                      {item.children.map((child: any, j: number) => {
+                        return (
+                          <Menu.Item className="menu-item" key={child.nickName}>
+                            <Link to={child.url}></Link>
+                            <span>{child.name}</span>
+                          </Menu.Item>
+                        );
+                      })}
+                    </SubMenu>
+                  );
+                } else if (!item.isHide) {
+                  return (
+                    <Menu.Item className="menu-item" key={item.nickName}>
+                      <Link to={item.url}>
+                        <Icon component={Icons[item.icon]} />
                         <span>{item.name}</span>
-                      </div>
-                    }
-                  >
-                    {item.children.map((child, j) => {
-                      return (
-                        <Menu.Item className="menu-item" key={child.nickName}>
-                          <Link to={child.url}></Link>
-                          <span>{child.name}</span>
-                        </Menu.Item>
-                      );
-                    })}
-                  </SubMenu>
-                );
-              } else if (!item.isHide) {
-                return (
-                  <Menu.Item className="menu-item" key={item.nickName}>
-                    <Link to={item.url}>
-                      <Icon component={item.icon} />
-                      <span>{item.name}</span>
-                    </Link>
-                  </Menu.Item>
-                );
-              }
-            })}
+                      </Link>
+                    </Menu.Item>
+                  );
+                }
+              })}
           </Menu>
         </Sider>
       </Router>
@@ -117,6 +126,7 @@ class MenuCunstom extends Component<any> {
 const mapStateToProps = (state: any) => ({
   selectMenu: state.selectMenu,
   openMenu: state.openMenu,
+  menus: state.menus,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

@@ -9,7 +9,7 @@ class User extends Component<any> {
     super(props);
   }
   handleClick() {
-    this.props.history.push("/app/taskManage/list");
+    this.props.history.push("/pages/taskManage/list");
   }
   render() {
     return (

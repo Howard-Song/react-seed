@@ -9,3 +9,5 @@ export type SETSELECTMENU_TYPE = typeof SETSELECTMENU;
 
 export const SETOPENMENU = "SETOPENMENU";
 export type SETOPENMENU_TYPE = typeof SETOPENMENU;
+export const SETMENUS = "SETMENUS";
+export type SETMENUS_TYPE = typeof SETMENUS;

@@ -17,21 +17,21 @@ export default Mock.mock('/getPermission', 'get', {
       component: 'Home',
       name: '首页',
       icon: 'HomeOutlined',
-      url: '/app/home',
+      url: '/pages/home',
       level: 1
     },
     {
       name: '任务',
       icon: 'DesktopOutlined',
       nickName: 'taskManage',
-      url: '/app/taskManage',
+      url: '/pages/taskManage',
       level: 1,
       children: [{
         nickName: 'list',
         component: 'TaskList',
         name: '列表',
         icon: '',
-        url: '/app/taskManage/list',
+        url: '/pages/taskManage/list',
         level: 2,
       }]
     },
@@ -39,14 +39,14 @@ export default Mock.mock('/getPermission', 'get', {
       name: '系统设置',
       icon: 'SettingOutlined',
       nickName: 'systemSetting',
-      url: '/app/setting',
+      url: '/pages/setting',
       level: 1,
       children: [{
         nickName: 'user',
         component: 'User',
         name: '用户管理',
         icon: '',
-        url: '/app/setting/user',
+        url: '/pages/setting/user',
         level: 2,
       }]
     },
