@@ -1,5 +1,4 @@
 import React, { Component, Dispatch } from "react";
-import Icon from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 
 const { SubMenu } = Menu;
@@ -85,13 +84,14 @@ class MenuCunstom extends Component<any> {
             {this.props.menus &&
               this.props.menus.map((item: any, index: number) => {
                 if (item.children) {
+                  const Icon = Icons[item.icon];
                   return (
                     <SubMenu
                       className="menu-item"
                       key={item.nickName}
                       title={
                         <div className="column-center">
-                          <Icon className="icon" component={Icons[item.icon]} />
+                          <Icon className="icon" />
                           <span>{item.name}</span>
                         </div>
                       }
@@ -107,10 +107,11 @@ class MenuCunstom extends Component<any> {
                     </SubMenu>
                   );
                 } else if (!item.isHide) {
+                  const Icon = Icons[item.icon];
                   return (
                     <Menu.Item className="menu-item" key={item.nickName}>
                       <Link to={item.url}>
-                        <Icon component={Icons[item.icon]} />
+                        <Icon />
                         <span>{item.name}</span>
                       </Link>
                     </Menu.Item>
