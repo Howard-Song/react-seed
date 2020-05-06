@@ -1,13 +1,13 @@
 import React from "react";
-import "./Login.less";
+import styles from "./Login.module.less";
 import { Form, Input, Button, Select } from "antd";
 import { withRouter } from "react-router-dom";
 
-const Login = () => {
+const Login = (props) => {
   const [form] = Form.useForm();
-
   const onFinish = (values) => {
     console.log(values);
+    props.history.push("/pages/home");
   };
 
   const onReset = () => {
@@ -18,10 +18,11 @@ const Login = () => {
     wrapperCol: { span: 19 },
   };
   return (
-    <div className="main">
+    <div className={styles.main}>
+      {/* {console.log(styles)} */}
       <Form
         form={form}
-        className="login-form"
+        className={styles["login-form"]}
         name="control-hooks"
         onFinish={onFinish}
       >
@@ -29,7 +30,7 @@ const Login = () => {
 
         <Form.Item
           {...layout}
-          name="note"
+          name="username"
           label="用户名："
           rules={[{ required: true }]}
         >
