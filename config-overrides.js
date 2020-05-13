@@ -1,7 +1,7 @@
 /*
  * @Author: yoo
  * @Date: 2020-03-25 18:12:37
- * @LastEditTime: 2020-04-30 12:14:32
+ * @LastEditTime: 2020-05-13 15:55:56
  * @LastEditors: yoo
  */
 const path = require('path');
@@ -21,13 +21,13 @@ module.exports = override(
   fixBabelImports('import', {
     libraryName: 'antd',
     libraryDirectory: 'es',
-    style: true,
+    // style: true,
   }),
   addLessLoader({
     javascriptEnabled: true,
     localIdentName: "[local]--[hash:base64:5]",
     modifyVars: {
-      '@primary-color': '#1890ff'
+      '@primary-color': '#1890ff',
     },
   }),
   addWebpackAlias({

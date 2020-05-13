@@ -10,10 +10,11 @@ import { connect } from "react-redux";
 import store from "../../redux/store";
 import Icons from "./../icon";
 
-class MenuCunstom extends Component<any> {
+class MenuCunstom extends Component<any, any> {
   constructor(props: any) {
     super(props);
   }
+  breadcrumbList: string[] = [];
   state = {
     url: location.hash.split("#")[1],
     rootSubmenuKeys: [],
@@ -35,6 +36,7 @@ class MenuCunstom extends Component<any> {
       });
     });
     this.props.history.listen((location: any) => {
+      this.breadcrumbList = [];
       this.getLocation(this.props.menus, location.pathname);
     });
   }
@@ -44,11 +46,14 @@ class MenuCunstom extends Component<any> {
         if (url.indexOf(item.url) != -1) {
           if (!item.children) {
             this.props.setSelectMenu([item.nickName]);
+            this.breadcrumbList.push(item.name);
+            this.props.getBreadcrumb(this.breadcrumbList);
             if (item.level == 1) {
               this.props.setOpenMenu([]);
             }
           } else {
             this.props.setOpenMenu([item.nickName]);
+            this.breadcrumbList.push(item.name);
             this.getLocation(item.children, url);
           }
         }

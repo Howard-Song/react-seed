@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import "./Home.less";
 import { Button } from "antd";
 import { withRouter } from "react-router";
+class Home extends Component<any, any> {
+  arr = [{ name: 1, id: 1 }];
 
-class Home extends Component<any> {
   constructor(props: any) {
     super(props);
   }

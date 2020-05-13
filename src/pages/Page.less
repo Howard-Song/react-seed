@@ -1,0 +1,26 @@
+@import './../assets/less/index';
+
+.header {
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+
+  .logo {
+    height: 2.5rem;
+    width: 2.5rem;
+    margin-left: 0.5rem;
+  }
+
+  .logout {
+    font-size: 1.25rem;
+    margin-right: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+
+    &:hover {
+      background-color: @main-background-color;
+    }
+  }
+}
